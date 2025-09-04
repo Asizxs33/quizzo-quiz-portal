@@ -71,12 +71,19 @@ body {
   transform: scale(0);
   transition: 0.5s ease-in-out;
   transition-delay: 1s;
+  /* Исправление для мобильных - обеспечиваем доступность */
+  position: relative;
+  z-index: 10;
+  pointer-events: auto;
 }
 
 .input-group {
   position: relative;
   width: 100%;
   margin: 1rem 0;
+  /* Исправление для мобильных */
+  z-index: 15;
+  pointer-events: auto;
 }
 
 .input-group i {
@@ -86,6 +93,9 @@ body {
   transform: translateY(-50%);
   font-size: 1.4rem;
   color: var(--gray-2);
+  /* Исправление для мобильных - не блокируем клики */
+  pointer-events: none;
+  z-index: 1;
 }
 
 .input-group input {
@@ -329,11 +339,31 @@ body {
     font-size: 16px; /* Предотвращает зум на iOS */
     min-height: 48px;
     padding: 1.2rem 3rem;
+    /* Дополнительные исправления */
+    position: relative;
+    z-index: 20;
+    pointer-events: auto;
   }
   
   .form button {
     min-height: 48px;
     font-size: 16px;
+    position: relative;
+    z-index: 20;
+    pointer-events: auto;
+  }
+  
+  /* Убеждаемся, что форма доступна */
+  .form {
+    position: relative;
+    z-index: 20;
+    pointer-events: auto;
+  }
+  
+  .form-wrapper {
+    position: relative;
+    z-index: 20;
+    pointer-events: auto;
   }
   
   .form-wrapper {
@@ -532,16 +562,32 @@ body {
     font-size: 16px;
     min-height: 50px;
     padding: 1.5rem 3rem;
+    /* Отладочные стили - временно */
+    border: 2px solid red !important;
+    background-color: rgba(255, 0, 0, 0.1) !important;
+    position: relative;
+    z-index: 25;
+    pointer-events: auto;
   }
   
   .form button {
     min-height: 50px;
     font-size: 16px;
     padding: 1rem 0;
+    border: 2px solid blue !important;
+    background-color: rgba(0, 0, 255, 0.1) !important;
+    position: relative;
+    z-index: 25;
+    pointer-events: auto;
   }
   
   .form {
     padding: 1.5rem;
+    border: 2px solid green !important;
+    background-color: rgba(0, 255, 0, 0.1) !important;
+    position: relative;
+    z-index: 25;
+    pointer-events: auto;
   }
   
   .form-wrapper {
@@ -587,6 +633,10 @@ body {
   align-content: center;
   justify-content: center;
   height: 100%;
+  /* Исправление для мобильных - убираем перекрытие */
+  position: relative;
+  z-index: 1;
+  pointer-events: none; /* Позволяем кликам проходить через этот элемент */
 }
 
 #logo {
