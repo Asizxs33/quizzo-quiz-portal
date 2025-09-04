@@ -23,6 +23,15 @@ body {
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
+  /* Мобильные исправления */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Предотвращаем зум при двойном тапе */
+  touch-action: manipulation;
 }
 
 .container {
@@ -91,6 +100,16 @@ body {
   -moz-appearance: none;
   appearance: none;
   box-sizing: border-box;
+  /* Мобильные исправления */
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+  touch-action: manipulation;
+  /* Увеличиваем область касания */
+  min-height: 48px;
 }
 
 .input-group input:focus {
@@ -305,6 +324,18 @@ body {
     padding: 1.5rem;
   }
   
+  /* Мобильные исправления для инпутов */
+  .input-group input {
+    font-size: 16px; /* Предотвращает зум на iOS */
+    min-height: 48px;
+    padding: 1.2rem 3rem;
+  }
+  
+  .form button {
+    min-height: 48px;
+    font-size: 16px;
+  }
+  
   .form-wrapper {
     max-width: 100%;
     padding: 0 1rem;
@@ -494,6 +525,23 @@ body {
   .col {
     padding: 1rem;
     top: 15%;
+  }
+  
+  /* Дополнительные мобильные исправления */
+  .input-group input {
+    font-size: 16px;
+    min-height: 50px;
+    padding: 1.5rem 3rem;
+  }
+  
+  .form button {
+    min-height: 50px;
+    font-size: 16px;
+    padding: 1rem 0;
+  }
+  
+  .form {
+    padding: 1.5rem;
   }
   
   .form-wrapper {
