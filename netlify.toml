@@ -1,0 +1,14 @@
+[build]
+  command = "npm install"
+  publish = "."
+
+[dev]
+  command = "echo 'Development server'"
+  port = 8888
+
+# Environment variables for database
+[context.production.environment]
+  DATABASE_URL = "postgresql://neondb_owner:npg_WJfTG1CPy7gS@ep-icy-snow-aelf148u-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+
+[context.development.environment]
+  DATABASE_URL = "postgresql://neondb_owner:npg_WJfTG1CPy7gS@ep-icy-snow-aelf148u-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require"

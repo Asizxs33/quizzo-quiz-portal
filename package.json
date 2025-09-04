@@ -1,0 +1,32 @@
+{
+  "name": "quizo-quiz-portal",
+  "version": "1.0.0",
+  "description": "Quiz Portal with Neon Database",
+  "main": "index.html",
+  "scripts": {
+    "dev": "netlify dev",
+    "start": "node server.js",
+    "local": "node server.js",
+    "setup": "node setup-env.js",
+    "create-env": "node create-env.js",
+    "test-db": "node test-db.js",
+    "create-tables": "node create-tables.js",
+    "build": "echo 'No build step required'",
+    "deploy": "netlify deploy --prod"
+  },
+  "dependencies": {
+    "pg": "^8.11.3",
+    "bcryptjs": "^2.4.3",
+    "express": "^4.18.2",
+    "dotenv": "^16.3.1"
+  },
+  "keywords": [
+    "quiz",
+    "education",
+    "neon",
+    "postgresql",
+    "netlify"
+  ],
+  "author": "Quizzo Team",
+  "license": "MIT"
+}

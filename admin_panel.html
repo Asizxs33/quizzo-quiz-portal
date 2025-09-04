@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель администратора | Quizo</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="Quizzo_logo.png" type="image/x-icon" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0d4b3b 0%, #1a5546 100%);
+            font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 0 0 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 64px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            width: 100%;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logout-btn {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 16px;
+            font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .logout-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+        }
+        
+        /* Стили для информации о пользователе */
+        .user-info {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 12px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .user-details {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            align-items: center;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            color: #0d4b3b;
+            font-size: 0.95em;
+        }
+        
+        .user-email {
+            color: #666;
+            font-size: 0.8em;
+            opacity: 0.8;
+        }
+        
+        .user-role {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #0d4b3b;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75em;
+            font-weight: 600;
+            text-align: center;
+            min-width: 60px;
+        }
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .header-logo img {
+            width: 38px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(42,59,143,0.10);
+        }
+        .header-logo span {
+            font-size: 1.25em;
+            color: #0d4b3b;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 36px 36px 30px 36px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .admin-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+            padding: 32px 36px 36px 36px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .admin-section h2, .vip-access-section h3 {
+            color: #0d4b3b;
+            margin-bottom: 24px;
+            font-size: 1.4em;
+            font-weight: 700;
+        }
+        
+        .vip-access-section h3 {
+            font-size: 1.2em;
+            margin-bottom: 16px;
+        }
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            min-width: 800px;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            border-radius: 12px;
+            margin-top: 18px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+        .user-table th, .user-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid rgba(13, 75, 59, 0.2);
+        }
+        .user-table th {
+            background: linear-gradient(135deg, #0d4b3b 0%, #1a5546 100%);
+            color: #ffffff;
+            font-weight: 700;
+        }
+        .user-table tr:hover {
+            background: rgba(13, 75, 59, 0.1);
+        }
+        .role-select {
+            padding: 8px 12px;
+            border: 1px solid rgba(13, 75, 59, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #0d4b3b;
+            font-size: 0.95em;
+        }
+        .save-btn {
+            background: linear-gradient(135deg, #0d4b3b 0%, #1a5546 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(13, 75, 59, 0.3);
+        }
+        .save-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(13, 75, 59, 0.4);
+        }
+        .vip-access-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+            padding: 32px 36px 36px 36px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        #vip-user-select {
+            margin-bottom: 24px;
+        }
+        
+        #vip-user-select label {
+            color: #0d4b3b;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 16px;
+            margin-top: 18px;
+        }
+        .test-item {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            padding: 16px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .test-item:hover {
+            border-color: #0d4b3b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(13, 75, 59, 0.2);
+        }
+        .test-item.selected {
+            border-color: #0d4b3b;
+            background: rgba(13, 75, 59, 0.1);
+        }
+        .test-item input[type="checkbox"] {
+            margin-right: 8px;
+        }
+        .hidden { display: none; }
+        .no-access {
+            text-align: center;
+            padding: 60px 20px;
+            color: #0d4b3b;
+        }
+        .no-access h2 {
+            color: #0d4b3b;
+            margin-bottom: 16px;
+        }
+        .back-btn {
+            background: linear-gradient(135deg, #0d4b3b 0%, #1a5546 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(13, 75, 59, 0.3);
+            margin-top: 16px;
+        }
+        .back-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(13, 75, 59, 0.4);
+        }
+        
+        /* Экран загрузки и проверки доступа */
+        .loading-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+            color: white;
+            text-align: center;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .access-denied {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            text-align: center;
+            color: #0d4b3b;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .access-denied h2 {
+            color: #dc3545;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        
+        .access-denied p {
+            margin-bottom: 30px;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        
+        .access-denied .btn {
+            background: linear-gradient(135deg, #0d4b3b 0%, #1a5546 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 28px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(13, 75, 59, 0.3);
+            text-decoration: none;
+            display: inline-block;
+            margin: 0 10px;
+        }
+        
+        .access-denied .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(13, 75, 59, 0.4);
+        }
+        
+        .access-denied .btn.danger {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        }
+        
+        /* Адаптивные стили для таблицы */
+        @media (max-width: 1200px) {
+            .user-table {
+                min-width: 700px;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .user-table {
+                min-width: 600px;
+            }
+            .user-table th, .user-table td {
+                padding: 10px 12px;
+                font-size: 0.9em;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .user-table {
+                min-width: 500px;
+            }
+            .user-table th, .user-table td {
+                padding: 8px 10px;
+                font-size: 0.85em;
+            }
+            .role-select {
+                padding: 6px 10px;
+                font-size: 0.9em;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .main-content {
+                padding: 20px 16px;
+                margin: 10px;
+            }
+            .admin-section, .vip-access-section {
+                padding: 20px 16px;
+            }
+            .user-table {
+                min-width: 400px;
+            }
+            .user-table th, .user-table td {
+                padding: 6px 8px;
+                font-size: 0.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="header-logo">
+                <img src="Quizzo_logo.png" alt="Quizo">
+                <span>Quizo Admin</span>
+            </div>
+            
+            <div class="header-actions">
+                <!-- Информация о пользователе -->
+                <div id="user-info" class="user-info" style="display: none; margin-right: 20px;">
+                    <div class="user-details">
+                        <span id="user-name" class="user-name"></span>
+                        <span id="user-email" class="user-email"></span>
+                        <span id="user-role" class="user-role"></span>
+                    </div>
+                </div>
+                
+                <button class="logout-btn" onclick="logoutUser()" title="Выйти из системы">
+                    <i class="fas fa-sign-out-alt"></i> Выйти
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="main-content">
+        <!-- Экран загрузки -->
+        <div id="loading-screen" class="loading-screen">
+            <div class="loading-spinner"></div>
+            <h2>Проверка прав доступа...</h2>
+            <p>Пожалуйста, подождите, пока мы проверяем ваши права администратора.</p>
+        </div>
+        
+        <!-- Админ панель (скрыта по умолчанию) -->
+        <div id="admin-section" class="admin-section hidden">
+            <h2>Управление пользователями</h2>
+            <div id="user-management"></div>
+        </div>
+        
+        <!-- VIP доступ (скрыт по умолчанию) -->
+        <div id="vip-access-section" class="vip-access-section hidden">
+            <h2>Настройка доступа VIP пользователей</h2>
+            <div id="vip-user-select">
+                <label for="vip-user-dropdown">Выберите VIP пользователя:</label>
+                <select id="vip-user-dropdown" style="margin-left: 12px; padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(13, 75, 59, 0.3); background: rgba(255, 255, 255, 0.9); color: #0d4b3b;">
+                    <option value="">Выберите пользователя...</option>
+                </select>
+            </div>
+            <div id="test-selection" style="margin-top: 24px;">
+                <h3>Выберите тесты для доступа:</h3>
+                <div class="test-grid" id="test-grid"></div>
+                <button class="save-btn" onclick="saveVIPAccess()" style="margin-top: 20px;">Сохранить доступ</button>
+            </div>
+        </div>
+        
+        <!-- Отказ в доступе (скрыт по умолчанию) -->
+        <div id="access-denied" class="access-denied hidden">
+            <h2>🚫 Доступ запрещен</h2>
+            <p id="access-denied-reason">У вас нет прав администратора для доступа к панели администратора.</p>
+            <p>Если вы считаете, что это ошибка, попробуйте обновить страницу или обратитесь к системному администратору.</p>
+            <div style="margin-top: 30px;">
+                <button onclick="location.reload()" class="btn">🔄 Обновить страницу</button>
+                <a href="tests.html" class="btn">← Вернуться к тестам</a>
+                <a href="index.html" class="btn danger">🚪 Выйти из системы</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Заменяем Firebase на Neon Database API -->
+    <script src="api/database.js"></script>
+    <script>
+        // Новая система аутентификации с Neon Database
+        console.log('🚀 Инициализация админ панели...');
+        
+        // Проверяем доступность Database API
+        if (window.databaseAPI) {
+            console.log('✅ Database API доступен');
+        } else {
+            console.error('❌ Database API недоступен!');
+        }
+        
+        let currentUser = null;
+        let allUsers = [];
+        let selectedVIPUser = null;
+        
+        // Проверка прав администратора
+        function checkAdminAccess() {
+            // Проверяем наличие необходимых элементов на странице
+            const requiredElements = ['loading-screen', 'admin-section', 'vip-access-section', 'access-denied', 'user-info', 'user-name', 'user-email', 'user-role'];
+            const missingElements = requiredElements.filter(id => !document.getElementById(id));
+            
+            if (missingElements.length > 0) {
+                console.error('❌ Отсутствуют необходимые элементы:', missingElements);
+                alert('Ошибка загрузки страницы. Отсутствуют необходимые элементы. Попробуйте обновить страницу.');
+                return;
+            }
+            
+            console.log('✅ Все необходимые элементы найдены на странице');
+            
+            const userId = sessionStorage.getItem('userId');
+            const userRole = sessionStorage.getItem('userRole');
+            
+            console.log('🔍 Проверка доступа - userId:', userId);
+            console.log('🔍 Проверка доступа - userRole из sessionStorage:', userRole);
+            
+            if (!userId) {
+                console.log('❌ Нет userId, показываем отказ в доступе');
+                showAccessDenied('Необходима авторизация. Войдите в систему.');
+                return;
+            }
+            
+            // Проверяем доступность Database API
+            if (!window.databaseAPI) {
+                console.log('❌ Database API недоступен');
+                showAccessDenied('Ошибка подключения к серверу. Проверьте интернет-соединение.');
+                return;
+            }
+            
+            // Проверяем роль администратора
+            if (userRole === 'admin') {
+                console.log('✅ Роль admin подтверждена');
+                const userName = sessionStorage.getItem('userName') || 'Администратор';
+                const userEmail = sessionStorage.getItem('userEmail') || '';
+                showAdminPanel(userName, userEmail, userRole);
+            } else {
+                console.log('❌ Недостаточно прав доступа');
+                showAccessDenied('У вас нет прав администратора.');
+            }
+        }
+        
+        
+        // Показать админ панель
+        function showAdminPanel(username, email, role) {
+            console.log('🎉 Показываем админ панель для:', username);
+            
+            // Скрываем экран загрузки
+            const loadingScreen = document.getElementById('loading-screen');
+            if (loadingScreen) {
+                loadingScreen.classList.add('hidden');
+                console.log('✅ Экран загрузки скрыт');
+            }
+            
+            // Показываем админ панель
+            const adminSection = document.getElementById('admin-section');
+            const vipSection = document.getElementById('vip-access-section');
+            if (adminSection) {
+                adminSection.classList.remove('hidden');
+                console.log('✅ Админ панель показана');
+            }
+            if (vipSection) {
+                vipSection.classList.remove('hidden');
+                console.log('✅ VIP секция показана');
+            }
+            
+            // Скрываем экран отказа в доступе
+            const accessDenied = document.getElementById('access-denied');
+            if (accessDenied) {
+                accessDenied.classList.add('hidden');
+                console.log('✅ Экран отказа в доступе скрыт');
+            }
+            
+            // Отображаем информацию о пользователе
+            displayUserInfo(username, email);
+            
+            // Загружаем всех пользователей
+            loadAllUsers();
+            
+            console.log('🎉 Админ панель успешно загружена');
+        }
+        
+        // Показать отказ в доступе
+        function showAccessDenied(reason) {
+            console.log('🚫 Показываем отказ в доступе:', reason);
+            
+            // Скрываем экран загрузки
+            const loadingScreen = document.getElementById('loading-screen');
+            if (loadingScreen) {
+                loadingScreen.classList.add('hidden');
+                console.log('✅ Экран загрузки скрыт');
+            }
+            
+            // Скрываем админ панель
+            const adminSection = document.getElementById('admin-section');
+            const vipSection = document.getElementById('vip-access-section');
+            if (adminSection) adminSection.classList.add('hidden');
+            if (vipSection) vipSection.classList.add('hidden');
+            
+            // Показываем экран отказа в доступе
+            const accessDenied = document.getElementById('access-denied');
+            if (accessDenied) {
+                accessDenied.classList.remove('hidden');
+                console.log('✅ Экран отказа в доступе показан');
+                
+                // Обновляем сообщение об ошибке
+                const reasonElement = accessDenied.querySelector('#access-denied-reason');
+                if (reasonElement) {
+                    reasonElement.textContent = reason;
+                }
+            } else {
+                console.log('❌ Экран отказа в доступе не найден');
+            }
+            
+            console.log('🚫 Доступ запрещен:', reason);
+        }
+        
+        // Отображение информации пользователя
+        function displayUserInfo(name, email) {
+            const userInfo = document.getElementById('user-info');
+            const userName = document.getElementById('user-name');
+            const userEmail = document.getElementById('user-email');
+            const userRole = document.getElementById('user-role');
+            
+            if (userInfo && userName && userEmail && userRole) {
+                userInfo.style.display = 'block';
+                userName.textContent = name || 'Пользователь';
+                userEmail.textContent = email || '';
+                userRole.textContent = '👑 Админ';
+                
+                // Анимация появления роли
+                userRole.style.opacity = '0';
+                userRole.style.transform = 'scale(0.8)';
+                
+                setTimeout(() => {
+                    userRole.style.transition = 'all 0.5s ease';
+                    userRole.style.opacity = '1';
+                    userRole.style.transform = 'scale(1)';
+                }, 200);
+                
+                console.log('✅ Информация о пользователе отображена:', { name, email });
+            } else {
+                console.error('❌ Не найдены элементы для отображения информации о пользователе');
+            }
+        }
+        
+        // Проверка прав администратора перед выполнением действий
+        function requireAdminAccess() {
+            const userRole = sessionStorage.getItem('userRole');
+            if (userRole !== 'admin') {
+                console.log('Попытка доступа без прав администратора');
+                showAccessDenied('Недостаточно прав для выполнения этого действия');
+                return false;
+            }
+            return true;
+        }
+        
+        // Загрузка всех пользователей
+        function loadAllUsers() {
+            if (!requireAdminAccess()) return;
+            
+            console.log('🔍 Загружаем всех пользователей...');
+            
+            if (!window.databaseAPI) {
+                console.error('❌ Database API недоступен');
+                return;
+            }
+            
+            window.databaseAPI.getAllUsers().then(result => {
+                if (result.success) {
+                    console.log('✅ Пользователи загружены:', result.users.length);
+                    allUsers = result.users.map(user => ({
+                        uid: user.id,
+                        email: user.email,
+                        username: user.username,
+                        role: user.role
+                    }));
+                    
+                    renderUserTable();
+                    renderVIPUserDropdown();
+                } else {
+                    console.error('❌ Ошибка загрузки пользователей:', result.error);
+                }
+            }).catch(error => {
+                console.error('❌ Ошибка при загрузке пользователей:', error);
+            });
+        }
+        
+        // Отрисовка таблицы пользователей
+        function renderUserTable() {
+            let html = `
+                <div class="table-container">
+                    <table class="user-table">
+                        <thead>
+                            <tr>
+                                <th>Email</th>
+                                <th>Имя</th>
+                                <th>Роль</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            allUsers.forEach(user => {
+                html += `
+                    <tr>
+                        <td>${user.email}</td>
+                        <td>${user.username}</td>
+                        <td>
+                            <select class="role-select" onchange="updateUserRole('${user.uid}', this.value)">
+                                <option value="user" ${user.role === 'user' ? 'selected' : ''}>Пользователь</option>
+                                <option value="vip" ${user.role === 'vip' ? 'selected' : ''}>VIP</option>
+                                <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Администратор</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button class="save-btn" onclick="saveUserRole('${user.uid}')">Сохранить</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            html += '</tbody></table></div>';
+            document.getElementById('user-management').innerHTML = html;
+        }
+        
+        // Отрисовка выпадающего списка VIP пользователей
+        function renderVIPUserDropdown() {
+            const vipUsers = allUsers.filter(user => user.role === 'vip');
+            let html = '<option value="">Выберите пользователя...</option>';
+            
+            vipUsers.forEach(user => {
+                html += `<option value="${user.uid}">${user.username} (${user.email})</option>`;
+            });
+            
+            document.getElementById('vip-user-dropdown').innerHTML = html;
+        }
+        
+        // Обновление роли пользователя
+        function updateUserRole(uid, newRole) {
+            const user = allUsers.find(u => u.uid === uid);
+            if (user) {
+                user.role = newRole;
+            }
+        }
+        
+        // Сохранение роли пользователя
+        function saveUserRole(uid) {
+            if (!requireAdminAccess()) return;
+            
+            const user = allUsers.find(u => u.uid === uid);
+            if (!user) return;
+            
+            console.log('🔄 Обновляем роль пользователя:', user);
+            
+            if (!window.databaseAPI) {
+                alert('API недоступен!');
+                return;
+            }
+            
+            window.databaseAPI.updateUserRole(uid, user.role).then(result => {
+                if (result.success) {
+                    alert('Роль пользователя успешно обновлена!');
+                    console.log('✅ Роль обновлена:', result.user);
+                    // Обновляем список пользователей
+                    loadAllUsers();
+                } else {
+                    alert('Ошибка при обновлении роли: ' + result.error);
+                    console.error('❌ Ошибка обновления роли:', result.error);
+                }
+            }).catch(error => {
+                alert('Ошибка при обновлении роли!');
+                console.error('❌ Ошибка при обновлении роли:', error);
+            });
+        }
+        
+        // Загрузка тестов для выбранного VIP пользователя
+        document.getElementById('vip-user-dropdown').addEventListener('change', function() {
+            selectedVIPUser = this.value;
+            console.log('🔄 Выбран VIP пользователь:', selectedVIPUser);
+            if (selectedVIPUser) {
+                loadTestsForVIPUser(selectedVIPUser);
+            } else {
+                document.getElementById('test-grid').innerHTML = '';
+            }
+        });
+        
+        // Загрузка тестов для VIP пользователя
+        function loadTestsForVIPUser(userId) {
+            if (!requireAdminAccess()) return;
+            
+            console.log('🔍 Загружаем тесты для VIP пользователя:', userId);
+            
+            if (!window.databaseAPI) {
+                console.error('❌ Database API недоступен');
+                return;
+            }
+            
+            // Загружаем текущие разрешенные тесты
+            console.log('🔄 Вызываем getVipAccess для userId:', userId);
+            window.databaseAPI.getVipAccess(userId).then(result => {
+                console.log('📥 Ответ от getVipAccess:', result);
+                if (result.success) {
+                    const allowedTests = result.allowedTests || {};
+                    console.log('✅ Загружены разрешенные тесты:', allowedTests);
+                    
+                    // Создаем сетку тестов
+                    const subjects = ['Математика', 'Физика', 'История', 'Информатика', 'Химия', 'Биология', 'География', 'Литература'];
+                    let html = '';
+                    
+                    console.log('🔍 Создаем сетку тестов для предметов:', subjects);
+                    console.log('🔍 Разрешенные тесты:', Object.keys(allowedTests));
+                    
+                    subjects.forEach(subject => {
+                        for (let part = 1; part <= 3; part++) {
+                            for (let test = 1; test <= 3; test++) {
+                                const testId = `${subject}_${part}_${test}`;
+                                const isSelected = allowedTests[testId] || false;
+                                
+                                // Логируем для отладки
+                                if (isSelected) {
+                                    console.log(`✅ Тест ${testId} отмечен как выбранный`);
+                                }
+                                
+                                html += `
+                                    <div class="test-item ${isSelected ? 'selected' : ''}" onclick="toggleTest('${testId}', this)">
+                                        <input type="checkbox" onchange="toggleTest('${testId}', this.parentElement)">
+                                        <span>${subject} - Часть ${part} - Тест ${test}</span>
+                                    </div>
+                                `;
+                            }
+                        }
+                    });
+                    
+                    document.getElementById('test-grid').innerHTML = html;
+                    console.log('📝 HTML сетки тестов сгенерирован и вставлен в DOM');
+                    
+                    // Программно устанавливаем состояние чекбоксов
+                    Object.keys(allowedTests).forEach(testId => {
+                        if (allowedTests[testId]) {
+                            const checkbox = document.querySelector(`input[onchange*="${testId}"]`);
+                            if (checkbox) {
+                                checkbox.checked = true;
+                                console.log(`✅ Чекбокс для ${testId} программно отмечен`);
+                            } else {
+                                console.log(`❌ Чекбокс для ${testId} не найден`);
+                            }
+                        }
+                    });
+                } else {
+                    console.error('❌ Ошибка загрузки VIP доступа:', result.error);
+                }
+            }).catch(error => {
+                console.error('❌ Ошибка при загрузке VIP доступа:', error);
+            });
+        }
+        
+        // Переключение выбора теста
+        function toggleTest(testId, element) {
+            if (!requireAdminAccess()) return;
+            
+            const checkbox = element.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+            element.classList.toggle('selected', checkbox.checked);
+        }
+        
+        // Сохранение доступа VIP пользователя
+        function saveVIPAccess() {
+            if (!requireAdminAccess()) return;
+            
+            if (!selectedVIPUser) {
+                alert('Выберите VIP пользователя!');
+                return;
+            }
+            
+            const testItems = document.querySelectorAll('#test-grid .test-item');
+            const allowedTests = {};
+            
+            testItems.forEach(item => {
+                const checkbox = item.querySelector('input[type="checkbox"]');
+                const testId = checkbox.getAttribute('onchange').match(/'([^']+)'/)[1];
+                if (checkbox.checked) {
+                    allowedTests[testId] = true;
+                }
+            });
+            
+            console.log('💾 Сохраняем VIP доступ для пользователя:', selectedVIPUser, allowedTests);
+            
+            if (!window.databaseAPI) {
+                alert('API недоступен!');
+                return;
+            }
+            
+            window.databaseAPI.saveVipAccess(selectedVIPUser, allowedTests).then(result => {
+                if (result.success) {
+                    alert('VIP доступ успешно сохранен!');
+                    console.log('✅ VIP доступ сохранен:', result);
+                } else {
+                    alert('Ошибка при сохранении VIP доступа: ' + result.error);
+                    console.error('❌ Ошибка сохранения VIP доступа:', result.error);
+                }
+            }).catch(error => {
+                alert('Ошибка при сохранении VIP доступа!');
+                console.error('❌ Ошибка при сохранении VIP доступа:', error);
+            });
+        }
+        
+        // Выход из системы
+        function logoutUser() {
+            // Очищаем все данные сессии
+            sessionStorage.clear();
+            localStorage.clear();
+            
+            // Перенаправляем на главную страницу
+            window.location.href = 'index.html';
+        }
+        
+        // Инициализация
+        console.log('🚀 Инициализация админ панели...');
+        
+        // Проверяем готовность DOM
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log('✅ DOM загружен, начинаем инициализацию');
+                initializeAdminPanel();
+            });
+        } else {
+            console.log('✅ DOM уже загружен, начинаем инициализацию');
+            initializeAdminPanel();
+        }
+        
+        function initializeAdminPanel() {
+            // Проверяем наличие всех необходимых элементов
+            const requiredElements = ['loading-screen', 'admin-section', 'vip-access-section', 'access-denied', 'user-info', 'user-name', 'user-email', 'user-role'];
+            const missingElements = requiredElements.filter(id => !document.getElementById(id));
+            
+            if (missingElements.length > 0) {
+                console.error('❌ Отсутствуют необходимые элементы:', missingElements);
+                alert('Ошибка загрузки страницы. Отсутствуют необходимые элементы. Попробуйте обновить страницу.');
+                return;
+            }
+            
+            console.log('✅ Все необходимые элементы найдены, начинаем проверку аутентификации');
+            
+            // Проверяем аутентификацию через sessionStorage
+            checkAdminAccess();
+        }
+        
+        // Таймаут для проверки доступа
+        setTimeout(() => {
+            const loadingScreen = document.getElementById('loading-screen');
+            if (loadingScreen && !loadingScreen.classList.contains('hidden')) {
+                console.log('⏰ Таймаут проверки доступа, показываем сообщение об ошибке');
+                showAccessDenied('Превышено время ожидания ответа от сервера. Проверьте интернет-соединение.');
+            }
+        }, 12000); // 12 секунд
+        
+        // Дополнительная проверка через 5 секунд
+        setTimeout(() => {
+            const loadingScreen = document.getElementById('loading-screen');
+            if (loadingScreen && !loadingScreen.classList.contains('hidden')) {
+                console.log('⚠️ Дополнительная проверка: экран загрузки все еще виден');
+                // Проверяем, есть ли ошибки в консоли
+                console.log('🔍 Проверяем состояние аутентификации...');
+            }
+        }, 5000);
+    </script>
+</body>
+</html> 

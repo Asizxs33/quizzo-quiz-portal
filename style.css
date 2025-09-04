@@ -1,0 +1,576 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f4f6fb;
+  margin: 0;
+  padding: 0;
+  color: #222;
+}
+
+h1, h2 {
+  text-align: center;
+  color: #2a3b8f;
+  margin-top: 30px;
+}
+
+#auth-section {
+  text-align: right;
+  padding: 20px 40px 0 0;
+}
+
+/* --- Секции --- */
+#admin-section, #userpre-section, #no-access {
+  max-width: 700px;
+  margin: 30px auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(42,59,143,0.08);
+  padding: 32px 36px 36px 36px;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #e0e4f0;
+  margin: 32px 0 24px 0;
+}
+
+/* --- Список тестов --- */
+.test-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.test-item {
+  background: #f7f9fd;
+  border-radius: 12px;
+  padding: 18px 22px;
+  box-shadow: 0 2px 8px rgba(42,59,143,0.04);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1.08em;
+  transition: box-shadow 0.2s;
+}
+.test-item:hover {
+  box-shadow: 0 4px 16px rgba(42,59,143,0.10);
+}
+
+.test-actions button {
+  background: #2a3b8f;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  margin-left: 6px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.test-actions button:hover {
+  background: #4053c7;
+  box-shadow: 0 2px 8px rgba(42,59,143,0.10);
+}
+
+#add-test-btn {
+  display: block;
+  margin: 24px auto 0 auto;
+  background: #2a3b8f;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 28px;
+  font-size: 1.1em;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(42,59,143,0.08);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+#add-test-btn:hover {
+  background: #4053c7;
+  box-shadow: 0 4px 16px rgba(42,59,143,0.12);
+}
+
+/* --- Userpre доступ --- */
+.user-select {
+  margin-bottom: 18px;
+  text-align: left;
+}
+#userpre-select {
+  padding: 7px 14px;
+  border-radius: 6px;
+  border: 1px solid #bfc7e0;
+  font-size: 1em;
+  margin-left: 8px;
+}
+#userpre-tests label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 1em;
+  cursor: pointer;
+}
+#userpre-tests input[type=checkbox] {
+  accent-color: #2a3b8f;
+  margin-right: 10px;
+  width: 18px;
+  height: 18px;
+}
+#save-userpre-tests {
+  margin-top: 12px;
+  background: #2a3b8f;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 22px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#save-userpre-tests:hover {
+  background: #4053c7;
+}
+
+/* --- Сообщение о недоступности --- */
+#no-access {
+  text-align: center;
+  color: #b71c1c;
+  font-size: 1.2em;
+  background: #fff0f0;
+  border: 1px solid #ffbdbd;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(183,28,28,0.04);
+}
+
+/* --- Адаптивность --- */
+@media (max-width: 600px) {
+  #admin-section, #userpre-section, #no-access {
+    padding: 16px 6px 18px 6px;
+  }
+  h1, h2 {
+    font-size: 1.2em;
+  }
+  .test-item {
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 1em;
+    padding: 12px 8px;
+  }
+  #add-test-btn, #save-userpre-tests {
+    width: 100%;
+    font-size: 1em;
+  }
+}
+
+/* Адаптивные стили для кнопок результатов */
+@media (max-width: 768px) {
+  .result_box .buttons {
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    padding: 0 20px;
+  }
+  
+  .result_box .buttons button {
+    width: 100%;
+    max-width: 200px;
+    padding: 10px 16px;
+    font-size: 0.9em;
+    margin: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .result_box .buttons {
+    gap: 10px;
+    padding: 0 16px;
+  }
+  
+  .result_box .buttons button {
+    max-width: 180px;
+    padding: 8px 14px;
+    font-size: 0.85em;
+  }
+}
+
+@media (max-width: 480px) {
+  .result_box .buttons {
+    gap: 8px;
+    padding: 0 12px;
+  }
+  
+  .result_box .buttons button {
+    max-width: 160px;
+    padding: 6px 12px;
+    font-size: 0.8em;
+  }
+}
+
+@media (max-width: 360px) {
+  .result_box .buttons {
+    gap: 6px;
+    padding: 0 8px;
+  }
+  
+  .result_box .buttons button {
+    max-width: 140px;
+    padding: 4px 10px;
+    font-size: 0.75em;
+  }
+}
+
+@media (max-width: 320px) {
+  .result_box .buttons {
+    gap: 4px;
+    padding: 0 6px;
+  }
+  
+  .result_box .buttons button {
+    max-width: 120px;
+    padding: 3px 8px;
+    font-size: 0.7em;
+  }
+}
+
+/* ===== УЛУЧШЕННАЯ ТАБЛИЦА ЛИДЕРОВ ===== */
+
+/* Стили для модального окна таблицы лидеров */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.modal.show-modal {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal > div {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 20px;
+  padding: 0;
+  max-width: 90%;
+  max-height: 90%;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(20px);
+  transform: scale(0.7);
+  transition: transform 0.3s ease;
+}
+
+.modal.show-modal > div {
+  transform: scale(1);
+}
+
+/* Единый контейнер для таблицы лидеров */
+.leaderboard-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+/* Заголовок таблицы лидеров */
+.leaderboard-header {
+  text-align: center;
+  padding: 25px 30px 20px 30px;
+  background: linear-gradient(135deg, #0d4b3b 0%, #1a5546 100%);
+  color: white;
+  margin: 0;
+}
+
+.leaderboard-header h1 {
+  color: #ffffff;
+  font-size: 2.2em;
+  font-weight: 800;
+  margin: 0 0 10px 0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.leaderboard-subtitle {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.1em;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Обертка для таблицы */
+.leaderboard-table-wrapper {
+  flex: 1;
+  padding: 25px 30px;
+  overflow-y: auto;
+  background: #ffffff;
+}
+
+/* Таблица лидеров */
+.leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.leaderboard-table th {
+  background: linear-gradient(135deg, #0d4b3b 0%, #1a5546 100%);
+  color: white;
+  padding: 18px 15px;
+  text-align: left;
+  font-weight: 700;
+  font-size: 1.1em;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  border: none;
+}
+
+.leaderboard-table td {
+  padding: 18px 15px;
+  border-bottom: 1px solid rgba(13, 75, 59, 0.08);
+  font-size: 1em;
+  transition: all 0.2s ease;
+  background: #ffffff;
+}
+
+.leaderboard-table tbody tr:hover {
+  background: rgba(13, 75, 59, 0.03);
+  transform: translateX(3px);
+}
+
+.leaderboard-table tbody tr:nth-child(even) td {
+  background: rgba(248, 249, 250, 0.8);
+}
+
+.leaderboard-table tbody tr:nth-child(even):hover td {
+  background: rgba(13, 75, 59, 0.05);
+}
+
+/* Медали для первых трех мест */
+.leaderboard-table tbody tr:nth-child(1) td:first-child {
+  color: #FFD700;
+  font-weight: 800;
+  font-size: 1.2em;
+}
+
+.leaderboard-table tbody tr:nth-child(1) td:first-child::before {
+  content: "🥇 ";
+  margin-right: 5px;
+}
+
+.leaderboard-table tbody tr:nth-child(2) td:first-child {
+  color: #C0C0C0;
+  font-weight: 800;
+  font-size: 1.2em;
+}
+
+.leaderboard-table tbody tr:nth-child(2) td:first-child::before {
+  content: "🥈 ";
+  margin-right: 5px;
+}
+
+.leaderboard-table tbody tr:nth-child(3) td:first-child {
+  color: #CD7F32;
+  font-weight: 800;
+  font-size: 1.2em;
+}
+
+.leaderboard-table tbody tr:nth-child(3) td:first-child::before {
+  content: "🥉 ";
+  margin-right: 5px;
+}
+
+/* Футер таблицы лидеров */
+.leaderboard-footer {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  padding: 25px 30px;
+  background: #f8f9fa;
+  border-top: 1px solid rgba(13, 75, 59, 0.1);
+  flex-wrap: wrap;
+}
+
+.leaderboard-footer button {
+  background: linear-gradient(135deg, #0d4b3b 0%, #1a5546 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 28px;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(13, 75, 59, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  min-width: 140px;
+}
+
+.leaderboard-footer button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(13, 75, 59, 0.4);
+  background: linear-gradient(135deg, #1a5546 0%, #0d4b3b 100%);
+}
+
+.leaderboard-footer .close-leaderboard-btn {
+  background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+  box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+}
+
+.leaderboard-footer .close-leaderboard-btn:hover {
+  background: linear-gradient(135deg, #495057 0%, #343a40 100%);
+  box-shadow: 0 8px 25px rgba(108, 117, 125, 0.4);
+}
+
+/* Кнопка закрытия */
+.close-modal {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.5em;
+  color: #0d4b3b;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-modal:hover {
+  background: #fff;
+  color: #b71c1c;
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Адаптивность для таблицы лидеров */
+@media (max-width: 768px) {
+  .modal > div {
+    margin: 20px;
+    max-width: 95%;
+    max-height: 95%;
+  }
+  
+  .leaderboard-header {
+    padding: 20px 20px 15px 20px;
+  }
+  
+  .leaderboard-header h1 {
+    font-size: 1.8em;
+  }
+  
+  .leaderboard-subtitle {
+    font-size: 1em;
+  }
+  
+  .leaderboard-table-wrapper {
+    padding: 20px;
+  }
+  
+  .leaderboard-table th,
+  .leaderboard-table td {
+    padding: 15px 12px;
+    font-size: 0.9em;
+  }
+  
+  .leaderboard-footer {
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .leaderboard-footer button {
+    width: 100%;
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal > div {
+    margin: 15px;
+    max-width: 98%;
+    max-height: 98%;
+  }
+  
+  .leaderboard-header {
+    padding: 15px 15px 10px 15px;
+  }
+  
+  .leaderboard-header h1 {
+    font-size: 1.5em;
+  }
+  
+  .leaderboard-table-wrapper {
+    padding: 15px;
+  }
+  
+  .leaderboard-table th,
+  .leaderboard-table td {
+    padding: 12px 8px;
+    font-size: 0.85em;
+  }
+  
+  .leaderboard-footer {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 360px) {
+  .modal > div {
+    margin: 10px;
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 0;
+  }
+  
+  .leaderboard-content {
+    border-radius: 0;
+  }
+  
+  .leaderboard-header {
+    padding: 15px 10px 10px 10px;
+  }
+  
+  .leaderboard-header h1 {
+    font-size: 1.3em;
+  }
+  
+  .leaderboard-table-wrapper {
+    padding: 10px;
+  }
+  
+  .leaderboard-table th,
+  .leaderboard-table td {
+    padding: 10px 6px;
+    font-size: 0.8em;
+  }
+  
+  .leaderboard-footer {
+    padding: 15px 10px;
+  }
+}
